@@ -33,7 +33,7 @@ class ProductServiceTest {
                 "",
                 ProductInfoItem(
                     ProductDescription("super movie", "something goes here"),
-                    ProductEnrichment(ProductImages("http://www.image.com/picture")),
+                    ProductEnrichment(ProductImages("https://www.image.com/picture")),
                     ProductClassification("dvd", "movies"),
                     ProductBrand("Super Movies Inc")
                 )
