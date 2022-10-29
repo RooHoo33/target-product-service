@@ -25,9 +25,14 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 
+    implementation("io.github.microutils:kotlin-logging-jvm:3.0.2")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("de.flapdoodle.embed:de.flapdoodle.embed.mongo:3.5.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
 }
 
 tasks.withType<KotlinCompile> {

@@ -5,5 +5,4 @@ enum class CurrencyCode {
     EUR,
     JPY,
     USD,
-
 }
