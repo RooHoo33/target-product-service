@@ -15,16 +15,6 @@ import reactor.core.publisher.Mono
 @RequestMapping("/products")
 class ProductController(private val productService: ProductService) {
 
-    @GetMapping("/{id}/price")
-    fun getProductPriceById(@PathVariable id: Long): Mono<ProductPrice> {
-        return productService.getProductPriceById(id)
-    }
-
-    @GetMapping("/{id}/info")
-    fun getProductInfoById(@PathVariable id: Long): Mono<ProductInfoResponse> {
-        return productService.getProductInfoById(id)
-    }
-
     @GetMapping("/{id}")
     fun getProductById(@PathVariable id:Long): Mono<ProductResponse> {
         return productService.getProductById(id)

@@ -58,52 +58,6 @@ class ProductControllerTest {
         mockServer.shutdown()
     }
 
-    @Test
-    fun `test the product price endpoint returns the correct product price with existing id`() {
-
-        val productPrice = ProductPrice(12345, 22.50, CurrencyCode.USD)
-        val productPriceMono = Mono.just(productPrice)
-        given(productPriceRepository.findById(12345))
-            .willReturn(productPriceMono)
-
-        this.webClient.get().uri("/products/12345/price")
-            .exchange()
-            .expectStatus().isOk
-            .expectBody(ProductPrice::class.java)
-            .isEqualTo(productPrice)
-    }
-
-    @Test
-    fun `test the product price endpoint returns a 404 error with incorrect id`() {
-        given(productPriceRepository.findById(99999))
-            .willReturn(Mono.empty())
-        this.webClient.get().uri("/products/99999/price")
-            .exchange()
-            .expectStatus().isNotFound
-    }
-
-    @Test
-    fun `tests the product info endpoint returns the product info with existing id`() {
-        mockServer.enqueue(
-            MockResponse().setResponseCode(200).setBody(jacksonObjectMapper().writeValueAsString(productInfoResponse))
-                .addHeader("Content-Type", "application/json")
-        )
-        this.webClient.get().uri("/products/12345/info")
-            .exchange()
-            .expectStatus().isOk
-            .expectBody(ProductInfoResponse::class.java)
-            .isEqualTo(productInfoResponse)
-
-
-    }
-
-    @Test
-    fun `tests the product info endpointreturns 404 error with incorrect id`() {
-        mockServer.enqueue(MockResponse().setResponseCode(404))
-        this.webClient.get().uri("/products/99999/info")
-            .exchange()
-            .expectStatus().isNotFound
-    }
 
     @Test
     fun `test the get product endpoint returns product with correct id`() {
