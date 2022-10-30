@@ -1,6 +1,5 @@
 package com.myservice.productservice.product.productinfo
 
-import mu.KLogger
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
@@ -12,10 +11,10 @@ import reactor.core.publisher.Mono
 class ProductInfoWebClient(
     builder: WebClient.Builder,
     @Value("\${product-info.api.key}")
-    final val productInfoAPIKey: String,
+    val productInfoAPIKey: String,
 
     @Value("\${product-info.api.url}")
-    final val productInfoAPIUrl: String
+    val productInfoAPIUrl: String
 
 
 ) {
