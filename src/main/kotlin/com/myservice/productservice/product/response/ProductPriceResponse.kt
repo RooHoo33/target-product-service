@@ -6,5 +6,5 @@ data class ProductPriceResponse(
     val value: Double,
 
     @JsonProperty("currency_code")
-    val currenyCode: CurrencyCode
+    val currency: CurrencyCode
 )

@@ -39,7 +39,7 @@ class ProductService(
                 if (error.statusCode == HttpStatus.NOT_FOUND) {
                     Mono.error(NotFoundException("Could not find product with ID of $productId"))
                 } else {
-                    Mono.error(BadRequestException("Could not proccess request with product with ID of $productId"))
+                    Mono.error(BadRequestException("Could not process request with product with ID of $productId"))
                 }
             }
     }
@@ -83,12 +83,12 @@ class ProductService(
         return getProductPriceById(product.id)
             .flatMap {
 
-                if (it.price != product.currentPrice.value || it.currencyCode != product.currentPrice.currenyCode) {
+                if (it.price != product.currentPrice.value || it.currencyCode != product.currentPrice.currency) {
                     productPriceRepository.save(
                         ProductPrice(
                             it.productId,
                             product.currentPrice.value,
-                            product.currentPrice.currenyCode
+                            product.currentPrice.currency
                         )
                     ).map { updatedProductPrice ->
                         product.currentPrice = marshProductPriceResponse(updatedProductPrice)

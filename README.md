@@ -1,5 +1,5 @@
 # Product Service
-Service to return product info and pricing. Stores product pricing in service database and ingrates with product api.
+Service to return product info and pricing. Stores product pricing in service database and integrates with product api.
 
 ## Running Locally
 To run the service locally: `./gradlew bootRun`
