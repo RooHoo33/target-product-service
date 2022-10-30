@@ -18,11 +18,19 @@ class ProductService(
     private val productInfoWebClient: ProductInfoWebClient
 ) {
 
+    /**
+     * Find the product price in the product price repository. If the product price cannot be found, a
+     * NotFoundException is thrown
+     */
     fun getProductPriceById(productId: Long): Mono<ProductPrice> {
         return productPriceRepository.findById(productId)
             .switchIfEmpty(Mono.error(NotFoundException("Could not find price for product with ID of $productId")))
     }
 
+    /**
+     * Gets the product info by id by calling the product info api. Throws a not found error is the info cannot be
+     * found in the api or a bad request if exception if a different problem is encountered when executing the request
+     */
     fun getProductInfoById(productId: Long): Mono<ProductInfoResponse> {
         return productInfoWebClient.getProduct(productId)
             .onErrorResume(WebClientResponseException::class.java) { error ->
@@ -34,6 +42,10 @@ class ProductService(
             }
     }
 
+    /**
+     * Gets the product price from the product price repository and the product info from the product api. Then merges
+     * the data into the product response
+     */
     fun getProductById(productId: Long): Mono<ProductResponse> {
         return getProductInfoById(productId)
             .zipWhen {
@@ -42,6 +54,9 @@ class ProductService(
             .map { marshallProductData(it) }
     }
 
+    /**
+     * Marshalls the product info mono and product price mono into a product object
+     */
     fun marshallProductData(tuple2: Tuple2<ProductInfoResponse, ProductPrice>): ProductResponse {
         val info = tuple2.t1
         val price = tuple2.t2
@@ -52,10 +67,16 @@ class ProductService(
         )
     }
 
+    /**
+     * Used to convert a product price object to the project price response object to be returned by this service
+     */
     fun marshProductPriceResponse(productPrice: ProductPrice): ProductPriceResponse {
        return ProductPriceResponse(productPrice.price, productPrice.currencyCode)
     }
 
+    /**
+     * Updates product price from the product is the price or currency changes
+     */
     fun updateProductData(product: ProductResponse): Mono<ProductResponse> {
         return getProductPriceById(product.id)
             .flatMap {

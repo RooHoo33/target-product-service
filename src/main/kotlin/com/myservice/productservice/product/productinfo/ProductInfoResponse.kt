@@ -9,6 +9,7 @@ data class ProductInfoResponse(
 data class ProductInfoData(
     val product: ProductInfoProduct
 )
+
 data class ProductInfoProduct(
     @JsonProperty("tcin")
     val productId: String,
