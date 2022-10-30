@@ -1,6 +1,6 @@
 package com.myservice.productservice.product.price
 
-import com.myservice.productservice.product.CurrencyCode
+import com.myservice.productservice.product.response.CurrencyCode
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 

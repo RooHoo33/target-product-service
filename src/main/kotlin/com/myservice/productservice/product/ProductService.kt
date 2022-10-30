@@ -6,6 +6,8 @@ import com.myservice.productservice.product.price.ProductPrice
 import com.myservice.productservice.product.price.ProductPriceRepository
 import com.myservice.productservice.product.productinfo.ProductInfoResponse
 import com.myservice.productservice.product.productinfo.ProductInfoWebClient
+import com.myservice.productservice.product.response.ProductPriceResponse
+import com.myservice.productservice.product.response.ProductResponse
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.reactive.function.client.WebClientResponseException

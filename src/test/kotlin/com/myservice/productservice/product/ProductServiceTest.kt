@@ -6,6 +6,9 @@ import com.myservice.productservice.error.exceptions.NotFoundException
 import com.myservice.productservice.product.price.ProductPrice
 import com.myservice.productservice.product.price.ProductPriceRepository
 import com.myservice.productservice.product.productinfo.*
+import com.myservice.productservice.product.response.CurrencyCode
+import com.myservice.productservice.product.response.ProductPriceResponse
+import com.myservice.productservice.product.response.ProductResponse
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.*

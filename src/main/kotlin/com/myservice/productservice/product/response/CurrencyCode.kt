@@ -1,4 +1,4 @@
-package com.myservice.productservice.product
+package com.myservice.productservice.product.response
 
 enum class CurrencyCode {
     AUD,

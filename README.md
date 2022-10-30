@@ -19,3 +19,4 @@ downloading the files. This only happens on the first run
  - MongoDB
  - Gradle
  - Kotlin
+ - kotlin-logging

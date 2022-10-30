@@ -1,7 +1,6 @@
 package com.myservice.productservice.product
 
-import com.myservice.productservice.product.price.ProductPrice
-import com.myservice.productservice.product.productinfo.ProductInfoResponse
+import com.myservice.productservice.product.response.ProductResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
@@ -21,7 +20,7 @@ class ProductController(private val productService: ProductService) {
     }
 
     @PutMapping("/{id}")
-    fun updateProductById( @RequestBody product: ProductResponse, @PathVariable id: Long, ): Mono<ProductResponse> {
+    fun updateProductById(@RequestBody product: ProductResponse, @PathVariable id: Long, ): Mono<ProductResponse> {
         return productService.updateProductData(product)
     }
 
