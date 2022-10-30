@@ -4,6 +4,9 @@ Service to return product info and pricing. Stores product pricing in service da
 ## Running Locally
 To run the service locally: `./gradlew bootRun`
 
+## Swagger Docs
+To view the swagger docs locally, just run `./gradlew bootRun` and go to the [Local Swagger Docs](http://localhost:8080/swagger-doc/webjars/swagger-ui/index.html)
+
 ## Testing
 To run testing: `./gradlew test` <br/>
 Note, if this if the first time running the tests, the embedded flapdoodle mongodb 
