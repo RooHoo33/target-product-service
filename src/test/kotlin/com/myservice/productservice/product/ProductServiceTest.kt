@@ -9,8 +9,10 @@ import com.myservice.productservice.product.productinfo.*
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.*
+import org.mockito.BDDMockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.SpyBean
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
@@ -22,7 +24,7 @@ class ProductServiceTest {
     @Autowired
     lateinit var productService: ProductService
 
-    @Autowired
+    @SpyBean
     lateinit var productPriceRepository: ProductPriceRepository
 
     lateinit var mockServer: MockWebServer
@@ -112,7 +114,7 @@ class ProductServiceTest {
     }
 
     @Test
-    fun `test the getProductInfoById function throws a bad request error when the api returns a bad request`(){
+    fun `test the getProductInfoById function throws a bad request error when the api returns a bad request`() {
 
         mockServer.enqueue(MockResponse().setResponseCode(400))
 
@@ -120,6 +122,71 @@ class ProductServiceTest {
         StepVerifier.create(badRequestMono)
             .expectErrorMatches {
                 it is BadRequestException
+            }
+            .verify()
+    }
+
+    @Test
+    fun `test the updateProductData function with existing id updates the product price`() {
+        val oldProductPrice = ProductPrice(123456789, 22.50, CurrencyCode.JPY)
+        val newProductPrice = ProductPrice(123456789, 100.95, CurrencyCode.JPY)
+
+        val setup = productPriceRepository.save(oldProductPrice)
+        val findUpdate = productPriceRepository.findById(123456789)
+        val update = productService.updateProductData(
+            ProductResponse(
+                oldProductPrice.productId!!,
+                "Awesome Movie",
+                ProductPriceResponse(newProductPrice.price, newProductPrice.currencyCode)
+            )
+        )
+
+        val mono = update.then(findUpdate)
+
+        val composite = Mono.from(setup)
+            .then(mono)
+        StepVerifier.create(composite)
+            .consumeNextWith { productPrice ->
+                Assertions.assertAll(
+                    { Assertions.assertEquals(newProductPrice, productPrice) },
+                )
+            }
+            .verifyComplete()
+    }
+
+    @Test
+    fun `test the updateProductData with unchanged data does not update database`() {
+        val productPrice = ProductPrice(123, 35.00, CurrencyCode.AUD)
+        val product = ProductResponse(
+            123,
+            "Best Movie",
+            ProductPriceResponse(productPrice.price, productPrice.currencyCode)
+        )
+        val setup = productPriceRepository.save(productPrice)
+
+        val mono = productService.updateProductData(product)
+        StepVerifier.create(Mono.from(setup).then(mono))
+            .consumeNextWith {
+                Assertions.assertAll(
+                    { Assertions.assertEquals(it, product) },
+                    { BDDMockito.verify(productPriceRepository).save(productPrice) }
+                )
+            }
+            .verifyComplete()
+    }
+
+    @Test
+    fun `test the updateProductData with incorrect id throws error`() {
+        val product = ProductResponse(
+                999999,
+                "Fake Movie",
+                ProductPriceResponse(5.55, CurrencyCode.AUD)
+            )
+
+        val find = productService.updateProductData(product)
+        StepVerifier.create(find)
+            .expectErrorMatches {
+                it is NotFoundException
             }
             .verify()
     }

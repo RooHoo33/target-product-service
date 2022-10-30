@@ -7,5 +7,5 @@ data class ProductResponse(
     val name: String,
 
     @JsonProperty("current_price")
-    val currentPrice: ProductPriceResponse
+    var currentPrice: ProductPriceResponse
 )
